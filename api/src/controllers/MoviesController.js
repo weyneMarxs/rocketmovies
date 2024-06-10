@@ -32,6 +32,19 @@ class MoviesController {
 
     res.json(movies)
   }
+
+  async delete(req, res) {
+    const { user_id } = req.params
+    const { id_movie } = req.query
+    const movie = await knex('movie_notes').where({user_id}).andWhere('id', id_movie).first()
+
+    if(!movie) {
+      throw new AppError('Filme não encontrado !')
+    }
+    await knex('movie_notes').where({user_id}).andWhere('id', id_movie).delete()
+
+    res.send('Filme excluido com sucesso.')
+  }
 }
 
 module.exports = MoviesController
