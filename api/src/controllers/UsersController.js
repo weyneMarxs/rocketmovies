@@ -33,17 +33,11 @@ class UsersController {
       avatar
     })
   }
-  async show(req, res) {
-    const users = await knex.select('id', 'name', 'email', 'created_at').from('users')
-    
-
-    res.json(users)
-  }
   async update(req, res) {
     const {name, email, password, old_password} = req.body
-    const {id} = req. params
+    const user_id = req.user.id
 
-    const user = await knex('users').where({id}).first()
+    const user = await knex('users').where({id: user_id}).first()
     const userWithUpdatedEmail = await knex('users').where({email}).first()
     if(!user) {
       throw new AppError('Usuario não encontrado.')
@@ -64,7 +58,7 @@ class UsersController {
       }
       user.password = await hash(password, 8)
     }
-    await knex('users').where('id', id).update({
+    await knex('users').where({id: user_id}).update({
       name: user.name,
       email: user.email,
       password: user.password

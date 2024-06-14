@@ -1,12 +1,14 @@
 const { Router } = require('express')
 const MoviesController = require('../controllers/MoviesController')
+const ensureAuthenticated = require('../middlewares/ensureAuthenticated')
 
-const movieNotesRouter = Router()
+const moviesRouter = Router()
 const moviesController = new MoviesController
+moviesRouter.use(ensureAuthenticated)
 
-movieNotesRouter.post('/:user_id', moviesController.create)
-movieNotesRouter.get('/:user_id', moviesController.index)
-movieNotesRouter.delete('/:user_id', moviesController.delete)
+moviesRouter.post('/:user_id', moviesController.create)
+moviesRouter.get('/:user_id', moviesController.index)
+moviesRouter.delete('/:user_id', moviesController.delete)
 
-module.exports = movieNotesRouter
+module.exports = moviesRouter
 
