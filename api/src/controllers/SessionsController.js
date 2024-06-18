@@ -8,8 +8,11 @@ class SessionsController {
   async create(req, res) {
     const {email, password} = req.body
     const user = await knex('users').where({email}).first()
+     if(!user) {
+      throw new AppError('usuário e/ou senha inválidos.', 401)
+    }
     const passMatched = await compare(password, user.password)
-    if(!user && !passMatched) {
+    if(!passMatched){
       throw new AppError('Usuário e/ou senha inválidos', 401)
     }
     const {secret, expiresIn} = authConfig.jwt

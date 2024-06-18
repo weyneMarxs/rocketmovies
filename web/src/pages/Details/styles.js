@@ -10,12 +10,12 @@ export const Container = styled.div`
     "content";
     >main {
       grid-area: content;
-      overflow-y: scroll;
+      overflow: hidden;
       padding: 64px 0;
     }
 `
 export const Content = styled.div`
-  max-width: 1113px;
+  max-width: 900px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -49,8 +49,9 @@ export const Content = styled.div`
         }
       }
       img {
-        width: 16px;
-        height: 16px;
+        width: 30px;
+        height: 30px;
+        border-radius: 50px;
       }
     }
   }
@@ -59,17 +60,7 @@ export const Content = styled.div`
   }
   > p {
     font-size: 16px;
-    margin-top: 16px;
+    margin: 16px 0 60px;
     text-align: justify;
   }
-`
-
-export const DeleteBtn = styled.button`
-  width: 300px;
-  height: 56px;
-  border: none;
-  border-radius: 10px;
-  margin: 3c0px auto;
-  background-color: ${({theme}) => theme.COLORS.BACKGROUND_BLACK};
-  color: ${({theme}) => theme.COLORS.WHITE};
 `

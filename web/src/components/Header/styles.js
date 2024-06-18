@@ -11,18 +11,19 @@ export const Container = styled.header`
   align-items: center;
   justify-content: space-between;
   padding: 0 80px;
-  > input {
-    width: 630px;
-    height: 56px;
-    background-color: ${({theme}) => theme.COLORS.BACKGROUND_700};
-    color: ${({theme}) => theme.COLORS.WHITE};
-    border: none;
-    border-radius: 10px;
-    padding: 19px 24px;
-  }
 `
 
-export const Profile = styled(Link)`
+// export const InputSearch = styled(Input)`
+//     width: 200px;
+//     height: 56px;
+//     background-color: ${({theme}) => theme.COLORS.BACKGROUND_700};
+//     color: ${({theme}) => theme.COLORS.WHITE};
+//     border: none;
+//     border-radius: 10px;
+//     padding: 19px 24px;
+// `
+
+export const Profile = styled.div`
   display: flex;
   align-items: center;
   gap: 16px;
@@ -37,16 +38,20 @@ export const Profile = styled(Link)`
     flex-direction: column;
     line-height: 24px;
 
-    span {
-      font-size: 14px;
+    button {
+      font-size: 18px;
+      margin-top: 5px;
       color: ${({theme}) => theme.COLORS.GRAY_100};
       text-align: right;
     }
-    strong {
-      font-size: 18px;
-      color: ${({theme}) => theme.COLORS.WHITE};
-    }
+    
   }
+`
+
+export const UserName = styled(Link)`
+  
+  font-size: 18px;
+  color: ${({theme}) => theme.COLORS.WHITE}; 
 `
 
 export const Logout = styled.button`

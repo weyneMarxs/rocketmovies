@@ -30,4 +30,17 @@ export default createGlobalStyle`
   button:hover, a:hover {
     filter: brightness(.9);
   }
+  ::-webkit-scrollbar {
+  width: 5px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: ${({theme}) => theme.COLORS.PINK}; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555; 
+}
 `

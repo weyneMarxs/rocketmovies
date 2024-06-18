@@ -15,11 +15,12 @@ export const Container = styled.div`
     overflow-y: auto;
   }
 
-  .tags {
+  .genres {
     display: flex;
     flex-wrap: wrap;
     gap: 24px;
-    background-color: #000;
+    /* background-color: ${({theme}) => theme.COLORS.BACKGROUND_600}; */
+    /* background-color: ${({theme}) => theme.COLORS.PINK}; */
     border-radius: 10px;
     padding: 16px;
   }

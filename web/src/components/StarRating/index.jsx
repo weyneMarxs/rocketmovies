@@ -7,7 +7,7 @@ export function StarRating({ rating }) {
   ));
 
   return (
-    <Container rating={rating}>
+    <Container $rating={rating}>
       {starIcons}
     </Container>
   )

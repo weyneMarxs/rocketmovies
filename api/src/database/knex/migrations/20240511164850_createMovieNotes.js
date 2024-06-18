@@ -1,9 +1,9 @@
 const knex = require("knex");
 
-exports.up = knex => knex.schema.createTable('movie_notes', table => {
+exports.up = knex => knex.schema.createTable('movies', table => {
   table.increments('id')
   table.text('title')
-  table.text('description')
+  table.text('sinopses')
   table.integer('rating')
   table.integer('user_id').references('id').inTable('users')
 
@@ -12,4 +12,4 @@ exports.up = knex => knex.schema.createTable('movie_notes', table => {
 
 })
 
-exports.down = knex => knex.schema.dropTable('movie_notes')
+exports.down = knex => knex.schema.dropTable('movies')

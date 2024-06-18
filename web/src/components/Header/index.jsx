@@ -1,18 +1,30 @@
-import { Container, Profile, Brand, Logout } from './styles.js'
-import { Input } from '../InputText/'
-export function Header() {
+import { Container, Profile, Brand, UserName } from './styles.js'
+import { ButtonText } from '../ButtonText'
+import avatarUser from '../../assets/avatar_placeholder.svg'
+import { api } from '../../services/api.js'
+import { useAuth } from '../../hooks/auth.jsx'
+import { useNavigate } from 'react-router-dom'
+
+export function Header({ element }) {
+  const { signOut, user } = useAuth()
+  const avatarUrl = user.avatar ? `${api.defaults.baseURL}/files/${user.avatar}` : avatarUser
+  const navigate = useNavigate()
+  function handleSignOut() {
+    signOut()
+    navigate('/')
+  }
   return (
     <Container>
       <Brand>
         <h1>RocketMovies.</h1>
       </Brand>
-      <input type="text" placeholder='Pesquisar pelo título' />
-      <Profile to="/profile">
+      {element}
+      <Profile>
         <div>
-          <strong>Weyne Marques</strong>
-          <span>Bem-vindo</span>
+          <UserName to="/profile" >{user.name}</UserName>
+          <ButtonText title="Sair" onClick={handleSignOut}></ButtonText>
         </div>
-        <img src="https://github.com/weyneMarxs.png" alt="foto do usuario" />
+        <img src={avatarUrl} alt="foto do usuario" />
       </Profile>
     </Container>
   )

@@ -3,47 +3,73 @@ const AppError = require('../utils/AppError')
 
 class MoviesController {
   async create (req, res){
-    const { user_id } = req.params
-    const { title, description, rating, movie_tags } = req.body
+    const user_id = req.user.id
+    const { title, sinopses, rating, genres } = req.body
 
     if(rating > 5) {
       throw new AppError('A nota só pode ser de 1 há 5')
     }
-    const [movie_note_id] = await knex('movie_notes').insert({
+    const [movie_id] = await knex('movies').insert({
       title,
-      description,
+      sinopses,
       rating,
       user_id
     })
 
-    const tagsInsert = movie_tags.map( name => {
+    const genresInsert = genres.map( name => {
       return {
-        movie_note_id,
+        movie_id,
         name,
         user_id
       }
     })
-    await knex('tags').insert(tagsInsert)
+    await knex('genres').insert(genresInsert)
     return res.send("Filme cadastrado com sucesso !")
   }
-  async index(req, res) {
-    const { user_id } = req.params
-    const movies = await knex('movie_notes').where({user_id})
 
-    res.json(movies)
+  async show(req, res) {
+    const { id } = req.params
+    const movie = await knex('movies').where({id}).first() 
+    const genres = await knex('genres').where({movie_id: id})
+    if(!movie) {
+      throw new AppError('Filme não encontrado !', 404)
+    }
+    return res.json({
+      ...movie,
+      genres
+    })
+  }
+  async index(req, res) {
+    const { title } = req.query
+    const user_id  = req.user.id
+    let movies
+
+    // if(genres) {
+    //   const filterGenres = genres.split(',').map( genre > genre.trim())
+    //   movies - await knex('genres')
+    //   .select(['movies.id', 'movies.title', 'movies.user_id'])
+    //   .where('movies.user_id', user_id).whereLike('movies.title', `%${title}%`).whereIn('name', filterGenres)
+    //   .innerJoin('movies', 'movies.id', 'genres.movie_id')
+    //   .groupBy('movies.id')
+    //   .orderBy('movies.tiles')
+    // } else {
+    // }
+    movies = await knex('movies').where({user_id}).whereLike('title', `%${title}%`).orderBy('created_at')
+    const userGenres = await knex('genres').where({user_id})
+    const moviesWhithGenres = movies.map(movie => {
+      const movieGenres = userGenres.filter(genre => genre.movie_id === movie.id)
+      return {
+        ...movie,
+        genres: movieGenres
+      }
+    } )
+    return res.json(moviesWhithGenres)
   }
 
   async delete(req, res) {
-    const { user_id } = req.params
-    const { id_movie } = req.query
-    const movie = await knex('movie_notes').where({user_id}).andWhere('id', id_movie).first()
-
-    if(!movie) {
-      throw new AppError('Filme não encontrado !')
-    }
-    await knex('movie_notes').where({user_id}).andWhere('id', id_movie).delete()
-
-    res.send('Filme excluido com sucesso.')
+    const { id } = req.params
+    await knex('movies').where({id}).delete()
+    return res.json()
   }
 }
 
